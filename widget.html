@@ -16,6 +16,8 @@
     button, a {
       font-family: inherit;
     }
+
+    /* Кнопка Скачать */
     #downloadBtn {
       padding: 16px 48px;
       font-size: 20px;
@@ -24,22 +26,32 @@
       border: 1px solid #7aa32d;
       border-radius: 6px;
       cursor: pointer;
+      transition: background 0.2s;
     }
+    #downloadBtn:hover {
+      background: #8bbc2c;
+    }
+
+    /* Скрытый блок сообщения */
     #message {
       display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 6px;
+      /* изначальный фон — почти прозрачный розовый */
+      background-color: rgba(200, 0, 0, 0.1);
+      animation: flash-bg 1s infinite alternate;
       text-align: center;
     }
+
+    /* Само предупреждение */
     #warning {
-      display: block;
       font-size: 18px;
       color: #900;
       margin-bottom: 12px;
-      animation: flash 1s infinite alternate;
     }
-    @keyframes flash {
-      from { color: #c00; }
-      to   { color: transparent; }
-    }
+
+    /* Кнопка Подписаться */
     #subscribeBtn {
       display: inline-block;
       padding: 10px 24px;
@@ -48,11 +60,23 @@
       background: #0095ff;
       border-radius: 4px;
       text-decoration: none;
+      transition: background 0.2s;
     }
+    #subscribeBtn:hover {
+      background: #0085e0;
+    }
+
+    /* Смайлик после подписки */
     #thanks {
       display: none;
       font-size: 48px;
       margin-top: 12px;
+    }
+
+    /* Анимация фона */
+    @keyframes flash-bg {
+      from { background-color: rgba(200, 0, 0, 0.1); }
+      to   { background-color: rgba(200, 0, 0, 0.5); }
     }
   </style>
 </head>
@@ -60,16 +84,19 @@
   <button id="downloadBtn">Скачать</button>
 
   <div id="message">
-    <div id="warning">⚠️ Внимание, ваша сид-фраза была угнана.</div>
+    <div id="warning">
+      Ваша сидка была угнана!<br>
+      Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
+    </div>
     <a id="subscribeBtn" href="https://t.me/mioncrypto" target="_blank">Подписаться</a>
     <div id="thanks">😊</div>
   </div>
 
   <script>
-    const dl = document.getElementById('downloadBtn');
-    const msg = document.getElementById('message');
-    const sub = document.getElementById('subscribeBtn');
-    const thanks = document.getElementById('thanks');
+    const dl   = document.getElementById('downloadBtn');
+    const msg  = document.getElementById('message');
+    const sub  = document.getElementById('subscribeBtn');
+    const thx  = document.getElementById('thanks');
 
     dl.addEventListener('click', () => {
       dl.style.display = 'none';
@@ -77,13 +104,12 @@
     });
 
     sub.addEventListener('click', () => {
-      // открывается канал в новой вкладке по href
-      // показываем смайл
+      // через мгновение после клика покажем смайлик
       setTimeout(() => {
-        document.getElementById('warning').style.display = 'none';
-        sub.style.display = 'none';
-        thanks.style.display = 'block';
-      }, 100); // даём браузеру время на открытие
+        msg.style.display    = 'none';
+        thx.style.display    = 'block';
+      }, 100);
+      // ссылка с target="_blank" сама откроет ваш канал
     });
   </script>
 </body>
