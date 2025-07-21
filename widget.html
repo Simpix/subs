@@ -3,140 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <title>Скачать / Подписаться</title>
-  <!-- Геймерский шрифт -->
+  <!-- Подключаем пиксельный геймерский шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin:0; padding:0; }
     html, body {
-      width: 100%; height: 100%;
-      background: #111;
-      font-family: 'Press Start 2P', monospace;
-      color: #eee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width:100%;  height:100%;
+      background:#111;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family:'Press Start 2P', monospace;
+      color:#eee;
     }
-    .download-container {
-      width: 100%;
-      max-width: 800px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .container {
+      width:100%;
+      max-width:800px;
+      text-align:center;
     }
 
     /* 1) Кнопка Скачать */
     #downloadBtn {
-      padding: 20px 60px;
-      font-size: 20px;
-      color: #111;
-      background: #9acd32;
-      border: 2px solid #7aa32d;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform .1s, box-shadow .1s;
+      background:#9acd32;
+      color:#111;
+      border:2px solid #7aa32d;
+      border-radius:8px;
+      padding:20px 60px;
+      font-size:20px;
+      cursor:pointer;
+      transition: transform .1s;
     }
     #downloadBtn:active {
       transform: scale(.98);
-      box-shadow: inset 0 0 8px rgba(0,0,0,.5);
     }
 
-    /* 2) Блок сообщения, изначально скрыт */
+    /* 2) Сообщение + кнопка «Подписаться» (по умолчанию скрыты) */
     #message {
-      display: none;
-      margin-top: 30px;
-      width: 100%;
-      max-width: 700px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
+      display:none;
+      margin-top:30px;
+      padding:20px;
+      background:rgba(200,0,0,0.1);
+      border-radius:6px;
     }
-
-    /* Глитч-текст */
-    #warning {
-      flex: 1;
-      font-size: 16px;
-      line-height: 1.4;
-      color: #f00;
-      position: relative;
-      animation: glitch 1s infinite;
-      text-align: left;
+    #message p {
+      color:#f00;
+      font-size:16px;
+      line-height:1.4;
+      margin-bottom:20px;
     }
-    #warning::before,
-    #warning::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      opacity: .8;
-    }
-    #warning::before {
-      text-shadow: -2px 0 #0ff;
-      clip: rect(0, 9999px, 8px, 0);
-    }
-    #warning::after {
-      text-shadow: 2px 0 #ff0;
-      clip: rect(10px, 9999px, 18px, 0);
-    }
-    @keyframes glitch {
-      0%   { transform: none; }
-      10%  { transform: translate(-1px, -1px); }
-      20%  { transform: translate(2px, 2px); }
-      30%  { transform: translate(-2px, 1px); }
-      40%  { transform: translate(1px, -2px); }
-      50%  { transform: translate(-1px, 2px); }
-      60%  { transform: translate(2px, -1px); }
-      70%  { transform: translate(-2px, -2px); }
-      80%  { transform: translate(1px, 1px); }
-      90%  { transform: translate(-1px, 2px); }
-      100% { transform: none; }
-    }
-
-    /* Кнопка Подписаться */
     #subscribeBtn {
-      display: inline-block;
-      padding: 12px 28px;
-      font-size: 14px;
-      color: #fff;
-      background: #0095ff;
-      border: 2px solid #006fcc;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: transform .1s, background .2s;
-      white-space: nowrap;
+      display:inline-block;
+      padding:12px 28px;
+      background:#0095ff;
+      color:#fff;
+      text-decoration:none;
+      border-radius:6px;
+      font-size:14px;
+      transition: transform .1s;
     }
     #subscribeBtn:active {
       transform: scale(.96);
     }
 
-    /* 3) Смайлик, изначально скрыт */
+    /* 3) Смайлик после подписки (по умолчанию скрыт) */
     #thanks {
-      display: none;
-      margin-top: 30px;
-      font-size: 48px;
+      display:none;
+      margin-top:30px;
+      font-size:48px;
     }
   </style>
 </head>
 <body>
-
-  <div class="download-container">
+  <div class="container">
+    <!-- 1. Смотрим только эту кнопку -->
     <button id="downloadBtn">Скачать</button>
 
+    <!-- 2. По клику на «Скачать» покажем этот блок -->
     <div id="message">
-      <div
-        id="warning"
-        data-text="Ваша сидка была угнана! Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!"
-      >
-        Ваша сидка была угнана!<br>Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
-      </div>
-      <a
-        id="subscribeBtn"
-        href="https://t.me/mioncrypto"
-        target="_blank"
+      <p>Ваша сидка была угнана!<br>
+         Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!</p>
+      <a id="subscribeBtn"
+         href="https://t.me/mioncrypto"
+         target="_blank"
       >Подписаться</a>
     </div>
 
+    <!-- 3. По клику «Подписаться» вместо сообщения — улыбающийся смайл -->
     <div id="thanks">😊</div>
   </div>
 
@@ -146,20 +98,20 @@
     const sub = document.getElementById('subscribeBtn');
     const thx = document.getElementById('thanks');
 
+    // Клик по «Скачать» — скрываем её, показываем #message
     dl.addEventListener('click', () => {
       dl.style.display  = 'none';
-      msg.style.display = 'flex';
+      msg.style.display = 'block';
     });
 
+    // Клик по «Подписаться» — открываем канал и спустя мгновение показываем смайлик
     sub.addEventListener('click', () => {
-      // через мгновение прячем сообщение в виджете
       setTimeout(() => {
         msg.style.display  = 'none';
         thx.style.display  = 'block';
       }, 100);
-      // сам <a> откроет канал в новой вкладке
+      // <a> сам откроет ваш канал в новой вкладке
     });
   </script>
-
 </body>
 </html>
