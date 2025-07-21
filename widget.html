@@ -8,8 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       background: transparent !important;
       overflow: hidden;
       display: flex;
@@ -26,7 +28,9 @@
 
     /* 1) Кнопка «Скачать» */
     #downloadBtn {
-      visibility: hidden;    /* ждем загрузки шрифта */
+      visibility: hidden;       /* ждем загрузки шрифта */
+      position: relative;
+      overflow: hidden;
       background: #9acd32;
       color: #111;
       border: 2px solid #7aa32d;
@@ -35,8 +39,30 @@
       font-size: 20px;
       cursor: pointer;
       transition: transform .1s;
-      margin-top: 40px;      /* смещаем вниз */
+      margin-top: 40px;         /* опускаем чуть ниже */
     }
+    /* анимация блика */
+    #downloadBtn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -50%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255,255,255,0.6);
+      transform: skewX(-25deg);
+      filter: blur(2px);
+      animation: shine 2s infinite;
+    }
+    @keyframes shine {
+      0%   { left: -50%; }
+      50%  { left: 150%; }
+      100% { left: 150%; }
+    }
+    /* увеличение при наведении */
+    #downloadBtn:hover {
+      transform: scale(1.05);
+    }
+    /* нажатие */
     #downloadBtn:active {
       transform: scale(.98);
     }
@@ -104,18 +130,18 @@
     const sub = document.getElementById('subscribeBtn');
     const thx = document.getElementById('thanks');
 
-    // показываем кнопку только после загрузки шрифтов
+    // Ждем загрузки шрифта, прежде чем показывать кнопку
     document.fonts.ready.then(() => {
       dl.style.visibility = 'visible';
     });
 
-    // при клике на «Скачать»
+    // При клике на «Скачать»
     dl.addEventListener('click', () => {
       dl.style.display  = 'none';
       msg.style.display = 'block';
     });
 
-    // при клике на «Подписаться»
+    // При клике на «Подписаться»
     sub.addEventListener('click', () => {
       setTimeout(() => {
         msg.style.display = 'none';
