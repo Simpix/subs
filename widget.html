@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Скачать / Подписаться</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      font-family: Arial, sans-serif;
+    }
+    button, a {
+      font-family: inherit;
+    }
+    #downloadBtn {
+      padding: 16px 48px;
+      font-size: 20px;
+      color: #fff;
+      background: #9acd32;
+      border: 1px solid #7aa32d;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #message {
+      display: none;
+      text-align: center;
+    }
+    #warning {
+      display: block;
+      font-size: 18px;
+      color: #900;
+      margin-bottom: 12px;
+      animation: flash 1s infinite alternate;
+    }
+    @keyframes flash {
+      from { color: #c00; }
+      to   { color: transparent; }
+    }
+    #subscribeBtn {
+      display: inline-block;
+      padding: 10px 24px;
+      font-size: 16px;
+      color: #fff;
+      background: #0095ff;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    #thanks {
+      display: none;
+      font-size: 48px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <button id="downloadBtn">Скачать</button>
+
+  <div id="message">
+    <div id="warning">⚠️ Внимание, ваша сид-фраза была угнана.</div>
+    <a id="subscribeBtn" href="https://t.me/mioncrypto" target="_blank">Подписаться</a>
+    <div id="thanks">😊</div>
+  </div>
+
+  <script>
+    const dl = document.getElementById('downloadBtn');
+    const msg = document.getElementById('message');
+    const sub = document.getElementById('subscribeBtn');
+    const thanks = document.getElementById('thanks');
+
+    dl.addEventListener('click', () => {
+      dl.style.display = 'none';
+      msg.style.display = 'block';
+    });
+
+    sub.addEventListener('click', () => {
+      // открывается канал в новой вкладке по href
+      // показываем смайл
+      setTimeout(() => {
+        document.getElementById('warning').style.display = 'none';
+        sub.style.display = 'none';
+        thanks.style.display = 'block';
+      }, 100); // даём браузеру время на открытие
+    });
+  </script>
+</body>
+</html>
