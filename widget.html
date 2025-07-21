@@ -16,19 +16,17 @@
       justify-content: center;
       align-items: center;
       font-family: 'Press Start 2P', monospace;
-      color: #fff;
+      color: #eee;
     }
     .container {
       width: 100%;
       max-width: 800px;
       text-align: center;
-      /* отступ сверху для вертикального центрирования */
-      padding-top: 60px;
     }
 
-    /* === 1) Кнопка «Скачать» === */
+    /* 1) Кнопка «Скачать» */
     #downloadBtn {
-      visibility: hidden;    /* ждем шрифты */
+      visibility: hidden;    /* ждем загрузки шрифта */
       background: #9acd32;
       color: #111;
       border: 2px solid #7aa32d;
@@ -37,21 +35,27 @@
       font-size: 20px;
       cursor: pointer;
       transition: transform .1s;
+      margin-top: 40px;      /* смещаем вниз */
     }
     #downloadBtn:active {
       transform: scale(.98);
     }
 
-    /* === 2) Сообщение === */
+    /* 2) Сообщение */
     #message {
       display: none;
       margin-top: 40px;
     }
     #message p {
+      animation: flash-text 1s infinite alternate;
       color: #f00;
       font-size: 16px;
       line-height: 1.4;
       margin-bottom: 20px;
+    }
+    @keyframes flash-text {
+      from { opacity: 1; }
+      to   { opacity: 0.2; }
     }
     #subscribeBtn {
       display: inline-block;
@@ -67,7 +71,7 @@
       transform: scale(.96);
     }
 
-    /* === 3) Смайлик === */
+    /* 3) Смайлик */
     #thanks {
       display: none;
       margin-top: 40px;
@@ -84,9 +88,10 @@
         Ваша сидка была угнана!<br>
         Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
       </p>
-      <a id="subscribeBtn"
-         href="https://t.me/mioncrypto"
-         target="_blank"
+      <a
+        id="subscribeBtn"
+        href="https://t.me/mioncrypto"
+        target="_blank"
       >Подписаться</a>
     </div>
 
@@ -99,22 +104,22 @@
     const sub = document.getElementById('subscribeBtn');
     const thx = document.getElementById('thanks');
 
-    // Показываем кнопку сразу после загрузки шрифта
+    // показываем кнопку только после загрузки шрифтов
     document.fonts.ready.then(() => {
       dl.style.visibility = 'visible';
     });
 
-    // Скрываем кнопку и показываем сообщение
+    // при клике на «Скачать»
     dl.addEventListener('click', () => {
       dl.style.display  = 'none';
       msg.style.display = 'block';
     });
 
-    // По клику «Подписаться» скрываем сообщение и показываем смайл
+    // при клике на «Подписаться»
     sub.addEventListener('click', () => {
       setTimeout(() => {
-        msg.style.display  = 'none';
-        thx.style.display  = 'block';
+        msg.style.display = 'none';
+        thx.style.display = 'block';
       }, 100);
     });
   </script>
