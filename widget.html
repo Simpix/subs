@@ -3,92 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <title>Скачать / Подписаться</title>
-  <!-- Подключаем пиксельный геймерский шрифт -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- Подключаем пиксельный шрифт из Google Fonts -->
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  >
   <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      width:100%;  height:100%;
-      background:#111;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-family:'Press Start 2P', monospace;
-      color:#eee;
+      width: 100%; height: 100%;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Press Start 2P', monospace;
+      color: #eee;
     }
     .container {
-      width:100%;
-      max-width:800px;
-      text-align:center;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
     }
 
-    /* 1) Кнопка Скачать */
+    /* 1) «Скачать» изначально невидим, пока шрифт не загрузится */
     #downloadBtn {
-      background:#9acd32;
-      color:#111;
-      border:2px solid #7aa32d;
-      border-radius:8px;
-      padding:20px 60px;
-      font-size:20px;
-      cursor:pointer;
+      visibility: hidden;
+      background: #9acd32;
+      color: #111;
+      border: 2px solid #7aa32d;
+      border-radius: 8px;
+      padding: 20px 60px;
+      font-size: 20px;
+      cursor: pointer;
       transition: transform .1s;
     }
     #downloadBtn:active {
       transform: scale(.98);
     }
 
-    /* 2) Сообщение + кнопка «Подписаться» (по умолчанию скрыты) */
+    /* 2) Блок сообщения — по умолчанию скрыт */
     #message {
-      display:none;
-      margin-top:30px;
-      padding:20px;
-      background:rgba(200,0,0,0.1);
-      border-radius:6px;
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(200,0,0,0.1);
+      border-radius: 6px;
     }
     #message p {
-      color:#f00;
-      font-size:16px;
-      line-height:1.4;
-      margin-bottom:20px;
+      color: #f00;
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 20px;
     }
     #subscribeBtn {
-      display:inline-block;
-      padding:12px 28px;
-      background:#0095ff;
-      color:#fff;
-      text-decoration:none;
-      border-radius:6px;
-      font-size:14px;
+      display: inline-block;
+      padding: 12px 28px;
+      background: #0095ff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
       transition: transform .1s;
     }
     #subscribeBtn:active {
       transform: scale(.96);
     }
 
-    /* 3) Смайлик после подписки (по умолчанию скрыт) */
+    /* 3) Смайлик после подписки — тоже скрыт */
     #thanks {
-      display:none;
-      margin-top:30px;
-      font-size:48px;
+      display: none;
+      margin-top: 30px;
+      font-size: 48px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 1. Смотрим только эту кнопку -->
+    <!-- 1) Увидите только эту кнопку, когда шрифт загрузится -->
     <button id="downloadBtn">Скачать</button>
 
-    <!-- 2. По клику на «Скачать» покажем этот блок -->
+    <!-- 2) После клика по «Скачать» появится этот блок -->
     <div id="message">
-      <p>Ваша сидка была угнана!<br>
-         Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!</p>
-      <a id="subscribeBtn"
-         href="https://t.me/mioncrypto"
-         target="_blank"
+      <p>
+        Ваша сидка была угнана!<br>
+        Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
+      </p>
+      <a
+        id="subscribeBtn"
+        href="https://t.me/mioncrypto"
+        target="_blank"
       >Подписаться</a>
     </div>
 
-    <!-- 3. По клику «Подписаться» вместо сообщения — улыбающийся смайл -->
+    <!-- 3) После клика по «Подписаться» вместо блока останется смайлик -->
     <div id="thanks">😊</div>
   </div>
 
@@ -98,19 +110,23 @@
     const sub = document.getElementById('subscribeBtn');
     const thx = document.getElementById('thanks');
 
-    // Клик по «Скачать» — скрываем её, показываем #message
+    // Дождаться подгрузки всех шрифтов, прежде чем показать кнопку
+    document.fonts.ready.then(() => {
+      dl.style.visibility = 'visible';
+    });
+
+    // Логика показа/скрытия блоков
     dl.addEventListener('click', () => {
       dl.style.display  = 'none';
       msg.style.display = 'block';
     });
 
-    // Клик по «Подписаться» — открываем канал и спустя мгновение показываем смайлик
     sub.addEventListener('click', () => {
+      // Открыть канал (target="_blank"), а через 100 мс показать смайл
       setTimeout(() => {
         msg.style.display  = 'none';
         thx.style.display  = 'block';
       }, 100);
-      // <a> сам откроет ваш канал в новой вкладке
     });
   </script>
 </body>
