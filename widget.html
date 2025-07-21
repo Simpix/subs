@@ -3,114 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <title>Скачать / Подписаться</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      background: #111;
+      font-family: 'Press Start 2P', monospace;
+      color: #eee;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: transparent;
-      font-family: Arial, sans-serif;
-    }
-    button, a {
-      font-family: inherit;
     }
 
-    /* Кнопка Скачать */
+    /* Скрытые чекбоксы */
+    #toggle1, #toggle2 { display: none; }
+
+    /* 1) Кнопка Скачать */
     #downloadBtn {
-      padding: 16px 48px;
+      padding: 20px 60px;
       font-size: 20px;
-      color: #fff;
+      color: #111;
       background: #9acd32;
-      border: 1px solid #7aa32d;
-      border-radius: 6px;
+      border: 2px solid #7aa32d;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: transform .1s, box-shadow .1s;
     }
-    #downloadBtn:hover {
-      background: #8bbc2c;
+    #downloadBtn:active {
+      transform: scale(.98);
+      box-shadow: 0 0 8px rgba(0,0,0,.5) inset;
     }
 
-    /* Скрытый блок сообщения */
+    /* 2) Сообщение + подписка */
     #message {
       display: none;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 6px;
-      /* изначальный фон — почти прозрачный розовый */
-      background-color: rgba(200, 0, 0, 0.1);
-      animation: flash-bg 1s infinite alternate;
+      margin-top: 30px;
+      width: 90%;
+      max-width: 600px;
       text-align: center;
     }
-
-    /* Само предупреждение */
-    #warning {
-      font-size: 18px;
-      color: #900;
-      margin-bottom: 12px;
+    /* Показываем его после клика Download */
+    #toggle1:checked ~ #message {
+      display: block;
     }
 
-    /* Кнопка Подписаться */
+    /* Глитч-эффект для warning */
+    #warning {
+      font-size: 16px;
+      line-height: 1.4;
+      color: #f00;
+      position: relative;
+      animation: glitch 1s infinite;
+      margin-bottom: 20px;
+    }
+    #warning::before,
+    #warning::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      color: #f00;
+      opacity: .8;
+    }
+    #warning::before {
+      text-shadow: -2px 0 #0ff;
+      clip: rect(0, 9999px, 8px, 0);
+    }
+    #warning::after {
+      text-shadow: 2px 0 #ff0;
+      clip: rect(10px, 9999px, 18px, 0);
+    }
+
+    @keyframes glitch {
+      0%   { transform: none; }
+      10%  { transform: translate(-1px, -1px); }
+      20%  { transform: translate(2px, 2px); }
+      30%  { transform: translate(-2px, 1px); }
+      40%  { transform: translate(1px, -2px); }
+      50%  { transform: translate(-1px, 2px); }
+      60%  { transform: translate(2px, -1px); }
+      70%  { transform: translate(-2px, -2px); }
+      80%  { transform: translate(1px, 1px); }
+      90%  { transform: translate(-1px, 2px); }
+      100% { transform: none; }
+    }
+
+    /* Кнопка подписаться */
     #subscribeBtn {
       display: inline-block;
-      padding: 10px 24px;
-      font-size: 16px;
+      padding: 12px 28px;
+      font-size: 14px;
       color: #fff;
       background: #0095ff;
-      border-radius: 4px;
+      border: 2px solid #006fcc;
+      border-radius: 6px;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: background .2s, transform .1s;
     }
-    #subscribeBtn:hover {
-      background: #0085e0;
+    #subscribeBtn:active {
+      transform: scale(.96);
     }
 
-    /* Смайлик после подписки */
+    /* 3) Смайлик после подписки */
     #thanks {
       display: none;
+      margin-top: 20px;
       font-size: 48px;
-      margin-top: 12px;
     }
-
-    /* Анимация фона */
-    @keyframes flash-bg {
-      from { background-color: rgba(200, 0, 0, 0.1); }
-      to   { background-color: rgba(200, 0, 0, 0.5); }
-    }
+    /* прячем message и показываем thanks */
+    #toggle2:checked ~ #message { display: none; }
+    #toggle2:checked ~ #thanks { display: block; }
   </style>
 </head>
 <body>
-  <button id="downloadBtn">Скачать</button>
 
+  <!-- 1) Скрытые флажки для управления состоянием -->
+  <input type="checkbox" id="toggle1">
+  <input type="checkbox" id="toggle2">
+
+  <!-- 1) Download -->
+  <label id="downloadBtn" for="toggle1">Скачать</label>
+
+  <!-- 2) Warning + подписка -->
   <div id="message">
-    <div id="warning">
-      Ваша сидка была угнана!<br>
-      Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
+    <div
+      id="warning"
+      data-text="Ваша сидка была угнана! Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!"
+    >
+      Ваша сидка была угнана! Чтобы вернуть доступ и деньги, необходимо подписаться на мой канал!
     </div>
-    <a id="subscribeBtn" href="https://t.me/mioncrypto" target="_blank">Подписаться</a>
-    <div id="thanks">😊</div>
+    <a
+      id="subscribeBtn"
+      href="https://t.me/mioncrypto"
+      target="_blank"
+      onclick="document.getElementById('toggle2').checked = true"
+    >Подписаться</a>
   </div>
 
-  <script>
-    const dl   = document.getElementById('downloadBtn');
-    const msg  = document.getElementById('message');
-    const sub  = document.getElementById('subscribeBtn');
-    const thx  = document.getElementById('thanks');
+  <!-- 3) Smiley -->
+  <div id="thanks">😊</div>
 
-    dl.addEventListener('click', () => {
-      dl.style.display = 'none';
-      msg.style.display = 'block';
-    });
-
-    sub.addEventListener('click', () => {
-      // через мгновение после клика покажем смайлик
-      setTimeout(() => {
-        msg.style.display    = 'none';
-        thx.style.display    = 'block';
-      }, 100);
-      // ссылка с target="_blank" сама откроет ваш канал
-    });
-  </script>
 </body>
 </html>
